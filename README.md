@@ -1,42 +1,42 @@
+# 🎛️ Master Control Panel (Hyprland & Niri Edition)
 
-# 🎛️ Master Control Panel (Hyprland Edition)
+Um painel de controle TUI (Terminal User Interface) completo para gerenciar sistemas **Arch Linux**. Projetado originalmente para Hyprland, agora com **suporte total ao Niri Compositor**.
 
-Um painel de controle TUI (Terminal User Interface) tudo-em-um para gerenciar sistemas **Arch Linux com Hyprland** (focado em ambientes como **Noctalia** ou **Hyprdots**).
-
-Este script unifica o gerenciamento de pacotes, administração do sistema, personalização de temas e configuração de atalhos em uma interface visual elegante baseada em `dialog`.
+Este script unifica o gerenciamento de pacotes, administração do sistema, personalização de temas (ícones/GTK) e configuração de atalhos (Keybinds) em uma interface visual elegante.
 
 ---
 
 ## ✨ Funcionalidades
 
-### 📦 1. Omni-Installer (Gerenciador Universal)
+### 📦 1. Omni-Installer (Multi-Select)
 
-Busca e instala pacotes simultaneamente em múltiplos repositórios com uma única pesquisa.
+Busca e instala pacotes em múltiplos repositórios simultaneamente.
 
+* **Interface:** Checklist (Use `Espaço` para selecionar vários, `Enter` para instalar).
 * **Fontes Suportadas:**
 * 📦 **Nativo:** Pacman (Arch), DNF (Fedora), Apt (Debian).
 * 🦄 **AUR:** Yay ou Paru.
 * 📦 **Flatpak:** Flathub.
 * 🛍️ **Snap:** Snapcraft.
-* ❄️ **Nix:** Nixpkgs (com detecção automática de `nix-env`).
+* ❄️ **Nix:** Nixpkgs (com detecção automática).
 
 
-* **Busca Paralela:** Pesquisa em todas as fontes ao mesmo tempo sem travar a interface.
+* **Smart Skip:** Pula automaticamente pacotes que já estão instalados para economizar tempo.
 
 ### 🛠️ 2. SysAdmin & Temas
 
-Ferramentas essenciais para manutenção e personalização visual.
+Ferramentas essenciais para manutenção e estética.
 
 * **🎨 Gerenciador de Temas:**
-* Instalador automático de ícones via arquivos `.tar`, `.tar.gz`, `.tar.xz`, `.tar.bz2`.
-* Atalho rápido para abrir o `nwg-look`.
-* **Fix de Ícones:** Força variáveis de ambiente para corrigir ícones sumindo em apps GTK/Noctalia.
+* **Instalador Universal de Ícones:** Extrai `.tar`, `.tar.gz`, `.tar.xz`, `.tar.bz2` direto para `~/.local/share/icons`.
+* **nwg-look:** Atalho rápido para a interface de temas GTK.
+* **Fix de Ícones:** Força variáveis de ambiente (`QT_QPA_PLATFORMTHEME`) para corrigir ícones sumindo em apps no Wayland.
 
 
 * **🔧 Ferramentas de Sistema:**
 * **Rede:** Scanner de IP (`arp-scan`) e Portas (`nmap`).
 * **Docker:** Gerenciamento visual de containers (Start, Stop, Logs).
-* **Disco:** Análise visual de espaço com `ncdu` ou estatísticas rápidas.
+* **Disco:** Análise visual com `ncdu` ou estatísticas rápidas.
 * **Monitor:** Acesso rápido ao `btop`.
 
 
@@ -45,64 +45,76 @@ Ferramentas essenciais para manutenção e personalização visual.
 
 Gerencie seu cliente Spotify modificado.
 
-* Instalação automática do Spicetify CLI.
-* Instalação do **Marketplace** (loja de apps).
+* Instalação automática do Spicetify CLI e Marketplace.
 * Correção de permissões para versão Flatpak.
-* Aplicação do tema **Catppuccin**.
+* Aplicação automática do tema **Catppuccin Mocha**.
 
-### ⌨️ 4. Hyprland Manager (Noctalia Ready)
+###  4. WM Manager (Hyprland & Niri)
 
-Gerencie suas keybinds sem editar arquivos manualmente.
+Detecta automaticamente seu ambiente (`$XDG_CURRENT_DESKTOP`) e abre o gerenciador correto.
 
-* **Plugin Friendly:** Adiciona atalhos no formato específico (`bind = ... #"Descrição"`) para que apareçam no plugin *Keybind Cheatsheet* do Noctalia.
-* **Smart Wrapper:** Detecta se o comando é de terminal (ex: `htop`) e adiciona o wrapper do seu terminal padrão automaticamente (ex: `kitty -e htop`).
-* **Editor de Sistema:** Atalho para editar o arquivo de binds original do sistema com `micro` ou `nano`.
-* **Backups:** Cria backups automáticos antes de qualquer alteração.
+* **Hyprland Manager:**
+* Adiciona atalhos (`bind`) compatíveis com plugins como *Noctalia Keybind Cheatsheet*.
+* Detecta comandos de terminal e adiciona o wrapper (ex: `kitty -e htop`).
+* Edita `UserKeybinds.conf`.
+
+
+* **Niri Manager (NOVO):**
+* Cria atalhos no formato **KDL** específico do Niri.
+* Sintaxe correta: `bind "Mod+T" { spawn "kitty"; }`.
+* Gerencia um arquivo separado `UserKeybinds.kdl` para manter seu `config.kdl` limpo.
+* Recarrega a configuração instantaneamente (`niri msg action reload-config`).
+
+
 
 ---
 
 ## 🚀 Instalação
 
 1. **Baixe o script:**
-Salve o arquivo `master_panel_v11.3.sh` na sua pasta de preferência.
+Salve o arquivo `master_panel_v12.1.sh`.
 2. **Dê permissão de execução:**
 ```bash
-chmod +x master_panel_v11.3.sh
+chmod +x master_panel_v12.1.sh
 
 ```
 
 
 3. **Execute:**
 ```bash
-./master_panel_v11.3.sh
+./master_panel_v12.1.sh
 
 ```
 
 
 
-*Nota: O script verificará e instalará automaticamente dependências necessárias como `dialog`, `btop`, `arp-scan`, etc.*
+*Nota: O script instalará automaticamente dependências como `dialog`, `btop`, `arp-scan` se faltarem.*
 
 ---
 
-## ⚙️ Configuração (Para Usuários Noctalia/Hyprdots)
+## ⚙️ Configuração dos Arquivos
 
-O script foi otimizado para a estrutura de pastas do **Noctalia/Hyprdots**.
+O script organiza suas configurações customizadas em arquivos separados para evitar que atualizações do sistema sobrescrevam suas mudanças.
 
-### 1. Caminhos dos Arquivos
+### 🔷 Para Usuários Hyprland
 
-O script edita por padrão:
+Adicione isto ao topo do seu `hyprland.conf`:
 
-* **Seus Atalhos:** `~/.config/hypr/UserConfigs/UserKeybinds.conf`
-* **Variáveis:** `~/.config/hypr/UserConfigs/UserEnvs.conf`
+```ini
+source = ~/.config/hypr/UserConfigs/UserKeybinds.conf
 
-### 2. Configurando o Plugin "Keybind Cheatsheet"
+```
 
-Para ver seus atalhos customizados na barra do Noctalia:
+### 🔶 Para Usuários Niri
 
-1. Abra o menu de widgets e clique na engrenagem ⚙️ do *Keybind Cheatsheet*.
-2. No campo **Hyprland Config**, altere o caminho para:
-`/home/SEU_USUARIO/.config/hypr/UserConfigs/UserKeybinds.conf`
-3. Clique em **Apply**.
+Adicione isto ao seu `~/.config/niri/config.kdl` (dentro ou fora do bloco principal, dependendo da versão):
+
+```kdl
+include "./UserConfigs/UserKeybinds.kdl"
+
+```
+
+*O script cria o arquivo e a pasta automaticamente na primeira execução.*
 
 ---
 
@@ -111,22 +123,19 @@ Para ver seus atalhos customizados na barra do Noctalia:
 ```text
 Menu Principal
 ├──  Omni-Installer
-│   ├── Configurar Repositórios (Ativar/Desativar Nix, Snap, etc)
-│   └── Buscar e Instalar
+│   ├── Seleção Multipla de Pacotes (Checklist)
+│   └── Configurar Repositórios
 ├──  SysAdmin & Temas
-│   ├── 🚑 FIX: Ícones Sumindo (Env Variables)
-│   ├── 👔 Abrir nwg-look
-│   ├── 📦 Instalar Ícones (Tarball Extractor)
-│   ├──  Rede & WiFi
-│   └──  Docker / Disco / Serviços
+│   ├──  FIX: Ícones Sumindo (Env Variables)
+│   ├──  Abrir nwg-look
+│   ├──  Instalar Ícones (Tarball Extractor)
+│   ├──  Rede /  Docker /  Disco
+│   └──  Atualizar Sistema
 ├──  Spicetify Tools
-│   ├── Instalar / Marketplace / Permissões
-│   └── Aplicar Temas
-└──  Hyprland Manager
-    ├── Adicionar Bind (Com suporte a descrição)
-    ├── Deletar Bind
-    ├── Editar Arquivo do Sistema
-    └── Restaurar Backup
+│   └── Instalar / Marketplace / Temas
+└──  WM Manager (Auto-Detect)
+    ├── Hyprland: Edita .conf, Reload via hyprctl
+    └── Niri: Edita .kdl, Reload via niri msg
 
 ```
 
@@ -134,12 +143,12 @@ Menu Principal
 
 ## 📝 Requisitos
 
-O script roda na maioria das distros, mas é otimizado para **Arch Linux**.
-Dependências (instaladas automaticamente se você usar Pacman):
-
-* `dialog` (Interface)
-* `curl`, `tar`, `sed`, `grep` (Core)
-* `btop`, `arp-scan`, `nmap` (SysAdmin)
-* `nwg-look` (Opcional, para temas)
+* **Distro:** Arch Linux (Recomendado), Fedora, Debian.
+* **Dependências Core:** `dialog`, `curl`, `tar`, `sed`, `grep`.
+* **Fontes:** Requer uma **Nerd Font** instalada no terminal para visualizar os ícones corretamente.
 
 ---
+
+## 🤝 Créditos
+
+Desenvolvido para facilitar a vida de usuários de Tiling Window Managers que preferem uma interface rápida e unificada a editar dezenas de arquivos de texto manualmente.
